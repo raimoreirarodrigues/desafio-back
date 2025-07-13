@@ -59,3 +59,5 @@
 >    Etapa 09 - Rode o comando abaixo para adicionar informações no banco de dados 
     
      php artisan db:seed
+
+     NOTA: o seeder pode demorar alguns segundos por conta da importação de todas as cidades brasileiras
