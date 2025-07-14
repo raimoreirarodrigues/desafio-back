@@ -12,7 +12,7 @@ class ClientService{
     public function list(array $data){
         try{
            $query = Client::query();
-
+          
            if(isset($data['document'])){
              $document = UtilService::removEspecialCharacter($data['document']);
              $query = $query->where('document',$document);
@@ -25,16 +25,20 @@ class ClientService{
            if(isset($data['gender'])){
              $query = $query->where('gender',$data['gender']);
            }
+           
+            if(isset($data['address'])){
+             $query = $query->where('address','like','%'.$data['address'].'%');
+           }
 
            if(isset($data['uf']) && $data['uf'] != 'all'){
-             $city = City::where('uf',$data['uf'])->first();
-             if($city){
-                $query = $query->where('uf',$city->uf);
+             $cities_id = City::where('uf',$data['uf'])->pluck('id');
+             if(count($cities_id) > 0){
+                $query = $query->whereIn('city_id',$cities_id);
              }
            }
 
            if(isset($data['city']) && $data['city'] != 'all'){
-             $city = City::where('name',$data['city'])->first();
+             $city = City::where('id',$data['city'])->first();
              if($city){
                 $query = $query->where('city_id',$city->id);
              }
@@ -49,6 +53,7 @@ class ClientService{
 
     public function store(array $data){
         try{
+           $data['city_id'] = $data['city'];
            $client =  Client::create($data);
            return $client->refresh();
         }catch(Exception $e){

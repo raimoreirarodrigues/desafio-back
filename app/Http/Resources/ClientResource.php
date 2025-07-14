@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Services\UtilService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,9 +17,9 @@ class ClientResource extends JsonResource
     {
         return [
             'id'            =>$this->id,
-            'document'      =>$this->document,
+            'document'      =>UtilService::format_document($this->document),
             'name'          =>$this->name,
-            'birthday'      =>$this->birthday,
+            'birthday'      =>$this->birthday?date('d/m/Y',strtotime($this->birthday)):'',
             'gender'        =>$this->gender,
             'address'       =>$this->address,
             'uf'            =>$this->city->uf,

@@ -29,7 +29,7 @@ class StoreClientRequest extends FormRequest
            'birthday'   =>['required'],
            'gender'     =>['required',Rule::in('M','F')],
            'address'    =>['required'],
-           'city_id'    =>['required']
+           'city'       =>['required']
         ];
     }
 
@@ -45,7 +45,7 @@ class StoreClientRequest extends FormRequest
             'gender.required'     =>'Informe o sexo',
             'gender.in'           =>'Informe o sexo (M = Masculino | F = Feminino)',
             'address.required'    =>'Informe o endereço',
-            'city_id.required'    =>'Informe a cidade',
+            'city.required'       =>'Informe a cidade',
            
            
         ];
