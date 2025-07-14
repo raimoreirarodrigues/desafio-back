@@ -1,0 +1,75 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\Agent;
+use Exception;
+
+class AgentService{
+  
+    public function list(array $data){
+        try{
+           $query = Agent::query();
+          
+           if(isset($data['document'])){
+             $document = UtilService::removEspecialCharacter($data['document']);
+             $query = $query->where('document',$document);
+           }
+
+           if(isset($data['name'])){
+             $query = $query->where('name','like','%'.$data['name'].'%');
+           }
+
+           if(isset($data['gender'])){
+             $query = $query->where('gender',$data['gender']);
+           }
+           
+            if(isset($data['address'])){
+             $query = $query->where('address','like','%'.$data['address'].'%');
+           }
+           return $query->orderBy('name','asc')->paginate(10);
+
+        }catch(Exception $e){
+          throw $e;
+        }
+    }
+
+    public function store(array $data){
+        try{
+           $agent =  Agent::create($data);
+           return $agent->refresh();
+        }catch(Exception $e){
+            throw $e;
+        }
+    }
+
+    public function getAgent($id){
+      try{
+        $agent = Agent::find($id);
+        if(is_null($agent)){
+          throw new Exception('Representante não identificado');
+        }
+
+        return $agent;
+      }catch(Exception $e){
+        throw $e;
+      }
+    }
+
+     public function update(Agent $agent, array $data){
+        try{
+           $agent->update($data);
+           return $agent->refresh();
+        }catch(Exception $e){
+            throw $e;
+        }
+    }
+
+    public function delete(Agent $agent){
+        try{
+          $agent->delete();
+        }catch(Exception $e){
+            throw $e;
+        }
+    }
+}
