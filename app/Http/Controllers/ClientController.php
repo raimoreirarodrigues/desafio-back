@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreClientRequest;
+use App\Http\Requests\UpdateClientRequest;
 use App\Http\Resources\ClientResource;
 use App\Services\ClientService;
 use Exception;
@@ -39,13 +40,13 @@ class ClientController extends Controller{
             $this->service->store($request->validated());
             return response()->json(['message'=>'Cliente cadastrado com sucesso!'],Response::HTTP_CREATED); 
         }catch(Exception $e){
-            return response()->json(['error'=>'Falha ao listar clientes'],Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['error'=>'Falha ao cadastrar o cliente'],Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function edit(Request $request, $id){
         try{
-            $client = $this->service->edit($id);
+            $client = $this->service->getClient($id);
             $cities = $this->service->getCitiesByUfClient($client);
             return response()->json(['client'=>ClientResource::make($client),'cities'=>$cities],Response::HTTP_OK);
         }catch(Exception $e){
@@ -53,5 +54,23 @@ class ClientController extends Controller{
         }
     }
 
-    
+    public function update(UpdateClientRequest $request,$id){
+        try{
+            $client = $this->service->getClient($id);
+            $this->service->update($client,$request->validated());
+            return response()->json(['message'=>'Cliente atualizado com sucesso!'],Response::HTTP_OK); 
+        }catch(Exception $e){
+            return response()->json(['error'=>'Falha ao atualizar o cliente'],Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function delete(Request $request,$id){
+        try{
+            $client = $this->service->getClient($id);
+            $this->service->delete($client);
+            return response()->json(['message'=>'Cliente apagado com sucesso!'],Response::HTTP_OK); 
+        }catch(Exception $e){
+            return response()->json(['error'=>'Falha ao apagar o cliente'],Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    } 
 }

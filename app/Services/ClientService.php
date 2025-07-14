@@ -61,7 +61,7 @@ class ClientService{
         }
     }
 
-    public function edit($id){
+    public function getClient($id){
       try{
         $client = Client::find($id);
         if(is_null($client)){
@@ -80,5 +80,23 @@ class ClientService{
       }catch(Exception $e){
         throw $e;
       }
+    }
+
+     public function update(Client $client, array $data){
+        try{
+           $data['city_id'] = $data['city'];
+           $client->update($data);
+           return $client->refresh();
+        }catch(Exception $e){
+            throw $e;
+        }
+    }
+
+    public function delete(Client $client){
+        try{
+          $client->delete();
+        }catch(Exception $e){
+            throw $e;
+        }
     }
 }
