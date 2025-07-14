@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Agent;
+use App\Models\AgentCity;
 use Exception;
 
 class AgentService{
@@ -68,6 +69,25 @@ class AgentService{
     public function delete(Agent $agent){
         try{
           $agent->delete();
+        }catch(Exception $e){
+            throw $e;
+        }
+    }
+
+     public function citiesAgent(Agent $agent){
+        try{
+          return AgentCity::with(['city'])->where('agent_id',$agent->id)->get();
+        }catch(Exception $e){
+            throw $e;
+        }
+    }
+
+    public function storeCityAgent(Agent $agent,$id_city){
+        try{
+           AgentCity::create([
+              'agent_id'=>$agent->id,
+              'city_id'=>$id_city
+           ]);
         }catch(Exception $e){
             throw $e;
         }

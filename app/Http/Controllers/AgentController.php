@@ -72,4 +72,24 @@ class AgentController extends Controller{
             return response()->json(['error'=>'Falha ao apagar o representante'],Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     } 
+
+     public function citiesAgent(Request $request,$id){
+        try{
+            $agent  = $this->service->getAgent($id);
+            $cities = $this->service->citiesAgent($agent);
+            return response()->json(['agent'=>AgentResource::make($agent),'cities'=>$cities],Response::HTTP_OK);
+        }catch(Exception $e){
+            return response()->json(['error'=>'Falha ao listar cidades atreladas a um representante'],Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    } 
+
+     public function storeCityAgent(Request $request,$id){
+        try{
+            $agent  = $this->service->getAgent($id);
+            $this->service->storeCityAgent($agent,$request->id);
+            return response()->json(['message'=>'Cidade associada ao representante com sucesso!'],Response::HTTP_CREATED); 
+        }catch(Exception $e){
+            return response()->json(['error'=>'Falha ao listar cidades atreladas a um representante'],Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    } 
 }
