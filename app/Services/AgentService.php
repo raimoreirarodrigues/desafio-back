@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Agent;
 use App\Models\AgentCity;
 use Exception;
+use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 
 class AgentService{
   
@@ -84,10 +85,28 @@ class AgentService{
 
     public function storeCityAgent(Agent $agent,$id_city){
         try{
+           //Verificar se representante já está associado à cidade
+            $city_agent = AgentCity::where('agent_id',$agent->id)->where('city_id',$id_city)->first();
+            if($city_agent){
+              throw new ConflictHttpException('Cidade já associada ao representante');
+            }
            AgentCity::create([
               'agent_id'=>$agent->id,
               'city_id'=>$id_city
            ]);
+        }catch(ConflictHttpException $e){
+            throw $e;
+        }catch(Exception $e){
+            throw $e;
+        }
+    }
+
+     public function deleteCityAgent($id_city_agent){
+        try{
+           $city_agent = AgentCity::find($id_city_agent);
+           if($city_agent){
+            $city_agent->delete();
+           }
         }catch(Exception $e){
             throw $e;
         }

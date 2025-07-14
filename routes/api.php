@@ -38,6 +38,7 @@ $VERSION_API = env('APP_VERSION_API', 'v1');
            Route::delete('/{id}','delete')->middleware(['throttle:10,1','xss.sanitizer']);
            Route::get('/{id}/cities','citiesAgent')->middleware(['throttle:100,1','xss.sanitizer']);
            Route::post('/{id}/cities','storeCityAgent')->middleware(['throttle:100,1','xss.sanitizer']);
+           Route::delete('/{id}/cities','deleteCityAgent')->middleware(['throttle:20,1','xss.sanitizer']);
         });
     });
  });

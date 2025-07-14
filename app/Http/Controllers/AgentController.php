@@ -10,6 +10,7 @@ use App\Services\AgentService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 
 class AgentController extends Controller{
 
@@ -88,8 +89,19 @@ class AgentController extends Controller{
             $agent  = $this->service->getAgent($id);
             $this->service->storeCityAgent($agent,$request->id);
             return response()->json(['message'=>'Cidade associada ao representante com sucesso!'],Response::HTTP_CREATED); 
+        }catch(ConflictHttpException $e){
+            return response()->json(['error'=>'O representante já está associado à cidade'],Response::HTTP_UNPROCESSABLE_ENTITY);
         }catch(Exception $e){
             return response()->json(['error'=>'Falha ao listar cidades atreladas a um representante'],Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     } 
+
+    public function deleteCityAgent(Request $request,$id){
+        try{
+            $this->service->deleteCityAgent($id);
+            return response()->json(['message'=>'Associação cidade e representante apagada com sucesso!'],Response::HTTP_CREATED); 
+        }catch(Exception $e){
+            return response()->json(['error'=>'Falha ao apagar associação cidade e representante'],Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }
