@@ -19,11 +19,12 @@ class ClientResource extends JsonResource
             'id'            =>$this->id,
             'document'      =>UtilService::format_document($this->document),
             'name'          =>$this->name,
-            'birthday'      =>$this->birthday?date('d/m/Y',strtotime($this->birthday)):'',
+            'birthday'      =>$this->birthday,
             'gender'        =>$this->gender,
             'address'       =>$this->address,
             'uf'            =>$this->city->uf,
-            'city'          =>$this->city->name
+            'city'          =>$this->city->name,
+            'city_id'       =>$this->city_id
         ];
     }
 }

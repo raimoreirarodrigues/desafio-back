@@ -60,4 +60,25 @@ class ClientService{
             throw $e;
         }
     }
+
+    public function edit($id){
+      try{
+        $client = Client::find($id);
+        if(is_null($client)){
+          throw new Exception('Cliente não identificado');
+        }
+
+        return $client;
+      }catch(Exception $e){
+        throw $e;
+      }
+    }
+
+    public function getCitiesByUfClient(Client $client){
+      try{
+        return City::where('uf',$client->city->uf)->orderBy('name','asc')->get();
+      }catch(Exception $e){
+        throw $e;
+      }
+    }
 }

@@ -43,5 +43,15 @@ class ClientController extends Controller{
         }
     }
 
+    public function edit(Request $request, $id){
+        try{
+            $client = $this->service->edit($id);
+            $cities = $this->service->getCitiesByUfClient($client);
+            return response()->json(['client'=>ClientResource::make($client),'cities'=>$cities],Response::HTTP_OK);
+        }catch(Exception $e){
+              return response()->json(['error'=>'Falha ao editar cliente'],Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     
 }
