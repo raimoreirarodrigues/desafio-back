@@ -1,7 +1,7 @@
 # Descrição
 
    > ### 1.1 que é o sistema?
-    É um sistema API RESTFUL para um desafio proposto pela upd8
+    É um sistema API RESTFUL para um desafio envolvendo o cadastro clientes e representantes de cidades
     
 
    > ### 1.2 Quais tecnologias foram utilizadas na construção da API?
